@@ -13,7 +13,7 @@ export const allUsersReducer = (
 ): Person_Type[] => {
 	switch (action.type) {
 		case Cases.GET_ALL: {
-			return [...state, ...action.data];
+			return [...action.data];
 		}
 		default:
 			return state;

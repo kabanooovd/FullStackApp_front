@@ -1,0 +1,10 @@
+.allUsersContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.usersListStyles{ 
+    display: flex;
+    flex-wrap: wrap;
+}

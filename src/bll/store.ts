@@ -2,6 +2,8 @@ import { applyMiddleware, combineReducers, createStore } from "redux";
 import thunk from "redux-thunk";
 import { allUsersReducer } from "./allUsersReducer";
 
+export type AppRootStateType = ReturnType<typeof rootReducer>
+
 export const rootReducer = combineReducers({
 	allUsers: allUsersReducer,
 });
