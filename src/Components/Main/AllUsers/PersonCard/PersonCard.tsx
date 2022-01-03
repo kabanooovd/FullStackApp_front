@@ -3,6 +3,7 @@ import { Card, Rate } from "antd";
 import { Divider } from "antd";
 import Title from "antd/lib/skeleton/Title";
 import { LoadingMode_Type } from "../../../../bll/mainAppReducer";
+import { currencyFormat } from "../../../../utils/currencyFormat";
 
 const { Meta } = Card;
 
@@ -23,10 +24,6 @@ export const PersonCard = ({
 	loadingMode: LoadingMode_Type;
 	_id: string;
 }) => {
-	function currencyFormat(num: number) {
-		return "$" + num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-	}
-
 	return (
 		<Card
 			hoverable

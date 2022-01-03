@@ -25,28 +25,47 @@ export const AllUsers = () => {
 		(state) => state.allUsers
 	);
 
-	const mappedAllUsers = allUsers.length
-		? allUsers.map((person) => {
-				return (
-					<PersonCard
-						key={person._id}
-						_id={person._id}
-						name={person.name}
-						profession={person.profession}
-						price={person.price}
-						rating={person.rating}
-						photo={person.photo ? person.photo : undefined}
-						loadingMode={loadingMode}
-					/>
-				);
-		  })
-		: "No data";
+	const [pagState, setPagState] = React.useState({
+		minValue: 0,
+		maxValue: 5,
+	});
+
+	const handleChange = (value: number) => {
+		setPagState({
+			minValue: (value - 1) * 5,
+			maxValue: value * 5,
+		});
+	};
+
+	const mappedAllUsers =
+		allUsers &&
+		allUsers.length > 0 &&
+		allUsers.slice(pagState.minValue, pagState.maxValue).map((person) => {
+			return (
+				<PersonCard
+					key={person._id}
+					_id={person._id}
+					name={person.name}
+					profession={person.profession}
+					price={person.price}
+					rating={person.rating}
+					photo={person.photo ? person.photo : undefined}
+					loadingMode={loadingMode}
+				/>
+			);
+		});
 
 	return (
 		<div className={customStyles.allUsersContainer}>
 			<Title style={{ marginTop: 20 }}>Oewr friends</Title>
 			<div className={customStyles.usersListStyles}>{mappedAllUsers}</div>
-			<Pagination defaultCurrent={1} total={allUsers.length} />
+			<Pagination
+				style={{ margin: 40 }}
+				defaultCurrent={1}
+				defaultPageSize={5}
+				onChange={handleChange}
+				total={allUsers.length}
+			/>
 		</div>
 	);
 };
