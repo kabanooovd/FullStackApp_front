@@ -1,3 +1,9 @@
 .headerTitleStyles {
     color: snow;
 }
+
+.spinnerPosition {
+    position: absolute;
+    bottom: -55px;
+    right: 50%;
+}

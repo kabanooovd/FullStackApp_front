@@ -1,5 +1,6 @@
 import { Dispatch } from "redux";
 import { personApi, Person_Type } from "../dal/personApi";
+import { setLoadingMode } from "./mainAppReducer";
 
 export const enum Cases {
 	GET_ALL = "person/GET_ALL_PERSON",
@@ -27,11 +28,14 @@ const setAllUsers = (data: Person_Type[]) => {
 
 // thunks
 export const getAllUserFromBack = async (dispatch: Dispatch) => {
+	dispatch(setLoadingMode("loading"));
 	try {
 		const res = await personApi.getAllPerson();
 		dispatch(setAllUsers(res.data));
+		dispatch(setLoadingMode("idle"));
 	} catch (err: any) {
 		console.log(err.message);
+		dispatch(setLoadingMode("idle"));
 	}
 };
 
