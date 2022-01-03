@@ -10,7 +10,7 @@ const footerTitleStyle = {
 
 export const AppFooter = () => {
 	return (
-		<Footer className="header">
+		<Footer className="header" style={{ height: "10vh" }}>
 			<span style={footerTitleStyle}>Footer</span>
 		</Footer>
 	);
