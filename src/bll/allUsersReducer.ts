@@ -39,5 +39,18 @@ export const getAllUserFromBack = async (dispatch: Dispatch) => {
 	}
 };
 
+export const updateUser =
+	(currentUser: Person_Type) => async (dispatch: Dispatch) => {
+		dispatch(setLoadingMode("loading"));
+		try {
+			const res = await personApi.updatePerson(currentUser);
+			alert("Updated");
+			dispatch(setLoadingMode("idle"));
+		} catch (err: any) {
+			console.log(err.message);
+			dispatch(setLoadingMode("idle"));
+		}
+	};
+
 // types
 export type AllUsersAction_type = ReturnType<typeof setAllUsers>;

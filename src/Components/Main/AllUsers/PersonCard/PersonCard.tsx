@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Rate } from "antd";
+import { Button, Card, Rate } from "antd";
 import { Divider } from "antd";
 import Title from "antd/lib/skeleton/Title";
 import { LoadingMode_Type } from "../../../../bll/mainAppReducer";
@@ -15,6 +15,7 @@ export const PersonCard = ({
 	rating,
 	loadingMode,
 	_id,
+	foundUserHandler,
 }: {
 	photo: string | undefined;
 	name: string;
@@ -23,6 +24,7 @@ export const PersonCard = ({
 	rating: number;
 	loadingMode: LoadingMode_Type;
 	_id: string;
+	foundUserHandler: (_id: string) => void;
 }) => {
 	return (
 		<Card
@@ -49,6 +51,20 @@ export const PersonCard = ({
 		>
 			<Divider>{name}</Divider>
 			<Meta title={profession} description={currencyFormat(price)} />
+			<div
+				style={{
+					display: "flex",
+					justifyContent: "center",
+					padding: "20px 0 0 0",
+				}}
+			>
+				<Button
+					type="primary"
+					onClick={() => foundUserHandler(_id)}
+				>
+					SHOW PERSON
+				</Button>
+			</div>
 		</Card>
 	);
 };
