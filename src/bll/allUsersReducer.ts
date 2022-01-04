@@ -43,8 +43,21 @@ export const updateUser =
 	(currentUser: Person_Type) => async (dispatch: Dispatch) => {
 		dispatch(setLoadingMode("loading"));
 		try {
-			const res = await personApi.updatePerson(currentUser);
+			await personApi.updatePerson(currentUser);
 			alert("Updated");
+			dispatch(setLoadingMode("idle"));
+		} catch (err: any) {
+			console.log(err.message);
+			dispatch(setLoadingMode("idle"));
+		}
+	};
+
+export const createUser =
+	(newPersonData: Omit<Person_Type, "photo" | "_id">) => async (dispatch: Dispatch) => {
+		dispatch(setLoadingMode("loading"));
+		try {
+			await personApi.createPerson(newPersonData);
+			alert("New user has been created...");
 			dispatch(setLoadingMode("idle"));
 		} catch (err: any) {
 			console.log(err.message);

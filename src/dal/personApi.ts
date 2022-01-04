@@ -11,7 +11,7 @@ export const personApi = {
 	getPersonById(_id: string) {
 		return instance.get<Person_Type>(`/person/${_id}`);
 	},
-	createPerson(person: Person_Type) {
+	createPerson(person: Omit<Person_Type, "photo" | "_id">) {
 		return instance.post<Person_Type>("/person", person);
 	},
 	updatePerson(person: Person_Type) {
