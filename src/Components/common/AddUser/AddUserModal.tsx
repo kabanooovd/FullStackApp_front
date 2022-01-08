@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { createUser } from "../../../bll/allUsersReducer";
 import { LoadingMode_Type } from "../../../bll/mainAppReducer";
 import { AppRootStateType } from "../../../bll/store";
-import { Person_Type } from "../../../dal/personApi";
+import { Create_Person_type, Person_Type } from "../../../dal/personApi";
 
 export const AddUserModal = ({
 	addUser,
@@ -22,7 +22,12 @@ export const AddUserModal = ({
 
 	const despatch = useDispatch();
 
-	const formik = useFormik<Omit<Person_Type, "photo" | "_id">>({
+	const [selectedFile, setSelectedFile] = React.useState<File | undefined>(
+		undefined
+	);
+	console.log(selectedFile);
+	const formik = useFormik<Omit<Create_Person_type, "photo">>({
+		// const formik = useFormik<Create_Person_type>({
 		initialValues: {
 			name: "",
 			profession: "",
@@ -31,13 +36,18 @@ export const AddUserModal = ({
 			price: +"",
 			isFree: false,
 			rating: +"",
+			// photo: undefined,
 		},
 		onSubmit: (values) => {
-			// alert(values.name);
-
-			despatch(createUser(values));
+			despatch(createUser({ ...values, photo: selectedFile }));
 		},
 	});
+
+	const onLoadedPhoto = (e: React.ChangeEvent<HTMLInputElement>) => {
+		if (e.target.files && e.target.files.length) {
+			setSelectedFile(e.target.files[0]);
+		}
+	};
 
 	return (
 		<div>
@@ -100,6 +110,16 @@ export const AddUserModal = ({
 							{...formik.getFieldProps("rating")}
 							placeholder="Insert rating"
 							required
+						/>
+						<input
+							style={{ margin: "20px 0" }}
+							type="file"
+							id="photo"
+							// {...formik.getFieldProps("photo")}
+							onChange={onLoadedPhoto}
+							// value={selectedFile}
+							// onBlur={formik.handleBlur}
+							placeholder="Insert image"
 						/>
 						<Row>
 							<div style={{ margin: 20 }}>

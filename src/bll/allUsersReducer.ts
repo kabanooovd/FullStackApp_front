@@ -1,5 +1,5 @@
 import { Dispatch } from "redux";
-import { personApi, Person_Type } from "../dal/personApi";
+import { Create_Person_type, personApi, Person_Type } from "../dal/personApi";
 import { setLoadingMode } from "./mainAppReducer";
 
 export const enum Cases {
@@ -53,7 +53,7 @@ export const updateUser =
 	};
 
 export const createUser =
-	(newPersonData: Omit<Person_Type, "photo" | "_id">) => async (dispatch: Dispatch) => {
+	(newPersonData: Create_Person_type) => async (dispatch: Dispatch) => {
 		dispatch(setLoadingMode("loading"));
 		try {
 			await personApi.createPerson(newPersonData);
