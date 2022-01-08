@@ -1,5 +1,4 @@
 import { Button, Input, Row } from "antd";
-import Form from "antd/lib/form/Form";
 import Modal from "antd/lib/modal/Modal";
 import { useFormik } from "formik";
 import React from "react";
@@ -7,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { createUser } from "../../../bll/allUsersReducer";
 import { LoadingMode_Type } from "../../../bll/mainAppReducer";
 import { AppRootStateType } from "../../../bll/store";
-import { Create_Person_type, Person_Type } from "../../../dal/personApi";
+import { Create_Person_type } from "../../../dal/personApi";
 
 export const AddUserModal = ({
 	addUser,
@@ -27,7 +26,6 @@ export const AddUserModal = ({
 	);
 	console.log(selectedFile);
 	const formik = useFormik<Omit<Create_Person_type, "photo">>({
-		// const formik = useFormik<Create_Person_type>({
 		initialValues: {
 			name: "",
 			profession: "",
@@ -35,11 +33,12 @@ export const AddUserModal = ({
 			experience: "",
 			price: +"",
 			isFree: false,
-			rating: +"",
-			// photo: undefined,
+			rating: 0,
 		},
 		onSubmit: (values) => {
 			despatch(createUser({ ...values, photo: selectedFile }));
+			formik.resetForm();
+			setAddUser(false);
 		},
 	});
 
@@ -63,64 +62,55 @@ export const AddUserModal = ({
 			>
 				<div>
 					<form onSubmit={formik.handleSubmit}>
-						<Input
-							style={{ margin: "20px 0" }}
-							type="text"
-							id="name"
-							{...formik.getFieldProps("name")}
-							placeholder="Insert name"
-							required
-						/>
-						<Input
-							style={{ margin: "20px 0" }}
-							type="text"
-							id="profession"
-							{...formik.getFieldProps("profession")}
-							placeholder="Insert profession"
-							required
-						/>
-						<Input
-							style={{ margin: "20px 0" }}
-							type="number"
-							id="age"
-							{...formik.getFieldProps("age")}
-							placeholder="Insert age"
-							required
-						/>
-						<Input
-							style={{ margin: "20px 0" }}
-							type="text"
-							id="experience"
-							{...formik.getFieldProps("experience")}
-							placeholder="Insert experience"
-							required
-						/>
-						<Input
-							style={{ margin: "20px 0" }}
-							type="number"
-							id="price"
-							{...formik.getFieldProps("price")}
-							placeholder="Insert price"
-							required
-						/>
-						<Input
-							style={{ margin: "20px 0" }}
-							type="number"
-							id="rating"
-							{...formik.getFieldProps("rating")}
-							placeholder="Insert rating"
-							required
-						/>
-						<input
-							style={{ margin: "20px 0" }}
-							type="file"
-							id="photo"
-							// {...formik.getFieldProps("photo")}
-							onChange={onLoadedPhoto}
-							// value={selectedFile}
-							// onBlur={formik.handleBlur}
-							placeholder="Insert image"
-						/>
+						<div style={{ margin: "20px 0" }}>
+							<div>Insert name...</div>
+							<Input
+								type="text"
+								id="name"
+								{...formik.getFieldProps("name")}
+								required
+							/>
+						</div>
+						<div style={{ margin: "20px 0" }}>
+							<div>Insert profession...</div>
+							<Input
+								type="text"
+								id="profession"
+								{...formik.getFieldProps("profession")}
+								required
+							/>
+						</div>
+						<div style={{ margin: "20px 0" }}>
+							<div>Insert age...</div>
+							<Input
+								type="number"
+								id="age"
+								{...formik.getFieldProps("age")}
+								required
+							/>
+						</div>
+						<div style={{ margin: "20px 0" }}>
+							<div>Insert your experience...</div>
+							<Input
+								type="text"
+								id="experience"
+								{...formik.getFieldProps("experience")}
+								required
+							/>
+						</div>
+						<div style={{ margin: "20px 0" }}>
+							<div>Insert your expected wage...</div>
+							<Input
+								type="number"
+								id="price"
+								{...formik.getFieldProps("price")}
+								required
+							/>
+						</div>
+						<div style={{ margin: "20px 0" }}>
+							<div>Insert your photo...</div>
+							<input type="file" id="photo" onChange={onLoadedPhoto} />
+						</div>
 						<Row>
 							<div style={{ margin: 20 }}>
 								<Button

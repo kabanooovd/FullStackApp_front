@@ -1,6 +1,16 @@
 import { Dispatch } from "redux";
 import { Create_Person_type, personApi, Person_Type } from "../dal/personApi";
 import { setLoadingMode } from "./mainAppReducer";
+import { ThunkAction } from "redux-thunk";
+import { Action, AnyAction } from "redux";
+import { AppRootStateType } from "./store";
+
+export type ThunkType<TAction extends Action = AnyAction> = ThunkAction<
+	void,
+	AppRootStateType,
+	unknown,
+	TAction
+>;
 
 export const enum Cases {
 	GET_ALL = "person/GET_ALL_PERSON",
@@ -53,11 +63,11 @@ export const updateUser =
 	};
 
 export const createUser =
-	(newPersonData: Create_Person_type) => async (dispatch: Dispatch) => {
+	(newPersonData: Create_Person_type): ThunkType => async (dispatch) => {
 		dispatch(setLoadingMode("loading"));
 		try {
 			await personApi.createPerson(newPersonData);
-			alert("New user has been created...");
+			dispatch(getAllUserFromBack);
 			dispatch(setLoadingMode("idle"));
 		} catch (err: any) {
 			console.log(err.message);

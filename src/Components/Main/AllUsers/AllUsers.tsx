@@ -103,9 +103,10 @@ export const AllUsers = () => {
 					price={chosenUser.price}
 					onHireHandler={onHireHandler}
 					isFree={chosenUser.isFree}
+					id={chosenUser._id}
 				/>
 			)}
-			<div className={customStyles.usersListStyles}>{mappedAllUsers}</div>
+			<div className={customStyles.usersListStyles}>{mappedAllUsers ? mappedAllUsers : <h1>No users yet...</h1>	}</div>
 			<Pagination
 				style={{ margin: 40 }}
 				defaultCurrent={1}

@@ -1,17 +1,11 @@
-import { Button, Card } from "antd";
+import { Button, Card, Image } from "antd";
 import Modal from "antd/lib/modal/Modal";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setFoundUser } from "../../bll/currentUserReducer";
+import { removeUser, setFoundUser } from "../../bll/currentUserReducer";
 import { LoadingMode_Type } from "../../bll/mainAppReducer";
 import { AppRootStateType } from "../../bll/store";
-import {
-	EditOutlined,
-	EllipsisOutlined,
-	SettingOutlined,
-} from "@ant-design/icons";
 import Meta from "antd/lib/card/Meta";
-import Avatar from "antd/lib/avatar/avatar";
 import { currencyFormat } from "../../utils/currencyFormat";
 
 export const PersonModalCard = ({
@@ -26,6 +20,7 @@ export const PersonModalCard = ({
 	price,
 	onHireHandler,
 	isFree,
+	id,
 }: {
 	isOpened: boolean;
 	setIsOpened: (isOpened: boolean) => void;
@@ -38,6 +33,7 @@ export const PersonModalCard = ({
 	price: number;
 	onHireHandler: (isFree: boolean) => void;
 	isFree: boolean;
+	id: string;
 }) => {
 	const dispatch = useDispatch();
 
@@ -50,6 +46,11 @@ export const PersonModalCard = ({
 		dispatch(setFoundUser(undefined));
 	};
 
+	const removeCurrentPerson = () => {
+		setIsOpened(false);
+		dispatch(removeUser(id));
+	};
+
 	return (
 		<>
 			<Modal
@@ -57,58 +58,47 @@ export const PersonModalCard = ({
 				centered
 				visible={isOpened}
 				footer={[
-					<Button key="back" onClick={onCloseHandler}>
-						Close
-					</Button>,
 					<Button
 						key="submit"
 						type="primary"
 						loading={loadingMode === "loading"}
 						onClick={() => onHireHandler(isFree)}
-						disabled={!isFree}
+						disabled={isFree}
 					>
 						Hire
 					</Button>,
+					<Button type="primary" danger onClick={removeCurrentPerson}>
+						Remove
+					</Button>,
+					<Button key="back" onClick={onCloseHandler}>
+						Close
+					</Button>,
 				]}
 			>
-				<Card
+				<div
 					style={{
-						width: 300,
+						display: "flex",
+						justifyContent: "center",
+						margin: "30px 0",
 					}}
-					cover={
-						<img
-							alt="example"
-							src={
-								photo
-									? `http://localhost:5000/${photo}`
-									: "https://i.ytimg.com/vi/J0XdmEDVfZI/hqdefault_live.jpg"
-							}
-						/>
-					}
-					actions={[
-						<SettingOutlined key="setting" />,
-						<EditOutlined key="edit" />,
-						<EllipsisOutlined key="ellipsis" />,
-					]}
 				>
-					<Meta
-						avatar={
-							<Avatar
-								src={
-									photo
-										? `http://localhost:5000/${photo}`
-										: "https://i.ytimg.com/vi/J0XdmEDVfZI/hqdefault_live.jpg"
-								}
-							/>
+					<Image
+						width={200}
+						src={
+							photo
+								? `http://localhost:5000/${photo}`
+								: "https://i.ytimg.com/vi/J0XdmEDVfZI/hqdefault_live.jpg"
 						}
-						title={`${name}, ${profession}`}
-						description={`${name} ${age && `is ${age} years old.`} Has ${
-							experience ? experience : "0"
-						} yaers of experience. Rating is ${rating} of 10. Expected wage is ${currencyFormat(
-							price
-						)}...`}
 					/>
-				</Card>
+				</div>
+				<Meta
+					title={`${name}, ${profession}`}
+					description={`${name} ${age && `is ${age} years old.`} Has ${
+						experience ? experience : "0"
+					} yaers of experience. Rating is ${rating} of 10. Expected wage is ${currencyFormat(
+						price
+					)}...`}
+				/>
 			</Modal>
 		</>
 	);
