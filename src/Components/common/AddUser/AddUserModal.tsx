@@ -3,17 +3,19 @@ import Modal from "antd/lib/modal/Modal";
 import { useFormik } from "formik";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createUser } from "../../../bll/allUsersReducer";
+import { regsterNewUser } from "../../../bll/authReducer";
 import { LoadingMode_Type } from "../../../bll/mainAppReducer";
 import { AppRootStateType } from "../../../bll/store";
-import { Create_Person_type } from "../../../dal/personApi";
+import { Create_Person_type } from "../../../dal/authApi";
 
 export const AddUserModal = ({
 	addUser,
 	setAddUser,
+	setIsLoginModal,
 }: {
 	addUser: boolean;
 	setAddUser: (addUser: boolean) => void;
+	setIsLoginModal: (isLoginModal: boolean) => void;
 }) => {
 	const loadingMode = useSelector<AppRootStateType, LoadingMode_Type>(
 		(state) => state.appState.loadingMode
@@ -24,19 +26,20 @@ export const AddUserModal = ({
 	const [selectedFile, setSelectedFile] = React.useState<File | undefined>(
 		undefined
 	);
-	console.log(selectedFile);
 	const formik = useFormik<Omit<Create_Person_type, "photo">>({
 		initialValues: {
 			name: "",
+			userName: "",
 			profession: "",
 			age: +"",
 			experience: "",
 			price: +"",
 			isFree: false,
+			password: "",
 			rating: 0,
 		},
 		onSubmit: (values) => {
-			despatch(createUser({ ...values, photo: selectedFile }));
+			despatch(regsterNewUser({ ...values, photo: selectedFile }));
 			formik.resetForm();
 			setAddUser(false);
 		},
@@ -46,6 +49,11 @@ export const AddUserModal = ({
 		if (e.target.files && e.target.files.length) {
 			setSelectedFile(e.target.files[0]);
 		}
+	};
+
+	const loginButton = () => {
+		setAddUser(false);
+		setIsLoginModal(true);
 	};
 
 	return (
@@ -63,11 +71,29 @@ export const AddUserModal = ({
 				<div>
 					<form onSubmit={formik.handleSubmit}>
 						<div style={{ margin: "20px 0" }}>
-							<div>Insert name...</div>
+							<div>Insert profile name...</div>
 							<Input
 								type="text"
 								id="name"
 								{...formik.getFieldProps("name")}
+								required
+							/>
+						</div>
+						<div style={{ margin: "20px 0" }}>
+							<div>Insert password...</div>
+							<Input
+								type="password"
+								id="password"
+								{...formik.getFieldProps("password")}
+								required
+							/>
+						</div>
+						<div style={{ margin: "20px 0" }}>
+							<div>Insert user name...</div>
+							<Input
+								type="text"
+								id="userName"
+								{...formik.getFieldProps("userName")}
 								required
 							/>
 						</div>
@@ -112,13 +138,27 @@ export const AddUserModal = ({
 							<input type="file" id="photo" onChange={onLoadedPhoto} />
 						</div>
 						<Row>
-							<div style={{ margin: 20 }}>
+							<div
+								style={{
+									margin: 20,
+									display: "flex",
+									width: "100%",
+									justifyContent: "space-between",
+									alignItems: "center",
+								}}
+							>
 								<Button
 									type={"primary"}
 									htmlType="submit"
 									disabled={loadingMode === "loading"}
 								>
 									ADD USER
+								</Button>
+								<Button
+									disabled={loadingMode === "loading"}
+									onClick={loginButton}
+								>
+									Login
 								</Button>
 							</div>
 						</Row>

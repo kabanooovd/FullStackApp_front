@@ -9,8 +9,6 @@ import { Pagination, Typography } from "antd";
 import { LoadingMode_Type } from "../../../bll/mainAppReducer";
 import { getChosenUser } from "../../../bll/currentUserReducer";
 import { PersonModalCard } from "../../common/PersonModalCard";
-import { AddUser } from "../../common/AddUser/AddUser";
-import { AddUserModal } from "../../common/AddUser/AddUserModal";
 
 const { Title } = Typography;
 
@@ -89,7 +87,6 @@ export const AllUsers = () => {
 	return (
 		<div className={customStyles.allUsersContainer}>
 			<Title style={{ marginTop: 20 }}>Oewr friends</Title>
-			<AddUser />
 			{showUser && chosenUser && (
 				<PersonModalCard
 					isOpened={showUser}

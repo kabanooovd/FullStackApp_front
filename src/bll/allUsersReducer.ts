@@ -1,5 +1,5 @@
 import { Dispatch } from "redux";
-import { Create_Person_type, personApi, Person_Type } from "../dal/personApi";
+import { personApi, Person_Type } from "../dal/personApi";
 import { setLoadingMode } from "./mainAppReducer";
 import { ThunkAction } from "redux-thunk";
 import { Action, AnyAction } from "redux";
@@ -55,19 +55,6 @@ export const updateUser =
 		try {
 			await personApi.updatePerson(currentUser);
 			alert("Updated");
-			dispatch(setLoadingMode("idle"));
-		} catch (err: any) {
-			console.log(err.message);
-			dispatch(setLoadingMode("idle"));
-		}
-	};
-
-export const createUser =
-	(newPersonData: Create_Person_type): ThunkType => async (dispatch) => {
-		dispatch(setLoadingMode("loading"));
-		try {
-			await personApi.createPerson(newPersonData);
-			dispatch(getAllUserFromBack);
 			dispatch(setLoadingMode("idle"));
 		} catch (err: any) {
 			console.log(err.message);
