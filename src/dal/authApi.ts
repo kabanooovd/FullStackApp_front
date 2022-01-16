@@ -26,6 +26,9 @@ export const authAPI = {
 	login(payload: Login_Data_types) {
 		return instance.post("/login", payload);
 	},
+	getUsetDataAfterRefresh(userNmae: string) {
+		return instance.get("/userdata/" + userNmae);
+	},
 };
 
 export type Create_Person_type = {

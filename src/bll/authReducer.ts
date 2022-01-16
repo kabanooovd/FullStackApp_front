@@ -3,6 +3,7 @@ import { authAPI, Create_Person_type, Login_Data_types } from "../dal/authApi";
 import { RoleTypes } from "../utils/commonTypes";
 import { jwtDecoder } from "../utils/jwtDecoder";
 import { LocalMemoManager } from "../utils/localMemoManager";
+import { AppRootStateType } from "./store";
 
 export enum authCases {
 	SET_LOGGED_USER_DATA = "AUTH/SET_LOGGED_USER_DATA",
@@ -56,6 +57,29 @@ export const login =
 			console.log(err);
 		}
 	};
+
+export const getUsetDataAfterRefresh = async (
+	dispatch: Dispatch,
+	getState: () => AppRootStateType
+) => {
+	const currentRole = getState().auth.role;
+	const lmm = new LocalMemoManager();
+	const token = lmm.getToken();
+	try {
+		if (!currentRole && token) {
+			const decodedToken = jwtDecoder(token);
+			const res = await authAPI.getUsetDataAfterRefresh(decodedToken.userName);
+			dispatch(
+				setLoggedUserData({
+					userName: res.data.currentUser.userName,
+					role: res.data.currentUser.role,
+				})
+			);
+		}
+	} catch (err) {
+		console.log(err);
+	}
+};
 
 // types
 export type AuthStateTypes = {

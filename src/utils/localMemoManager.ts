@@ -3,7 +3,7 @@ export class LocalMemoManager {
 		localStorage.setItem("token", token);
 	}
 	getToken() {
-		localStorage.getItem("token");
+		return localStorage.getItem("token");
 	}
 	removeToken() {
 		localStorage.removeItem("token");
